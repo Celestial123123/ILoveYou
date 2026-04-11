@@ -130,7 +130,77 @@
       0 30px 80px rgba(0, 0, 0, 0.45),
       inset 0 1px 0 rgba(255, 255, 255, 0.1);
     color: #ffffff;
+    transition: all 0.5s ease-in-out;
   }
+
+  .letter-toggle {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.05);
+    color: #fdf6f2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    opacity: 0.4;
+    transition: opacity 0.4s ease, transform 0.3s ease, background 0.3s ease, top 0.5s ease-in-out;
+    -webkit-appearance: none;
+    z-index: 4;
+  }
+  .letter-toggle:hover { opacity: 0.9; background: rgba(255, 255, 255, 0.1); }
+  .letter-toggle:active { transform: scale(0.92); }
+  .letter-toggle svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  .letter-toggle .icon-collapse { display: block; }
+  .letter-toggle .icon-expand { display: none; }
+
+  .letter-body {
+    overflow: hidden;
+    max-height: 3000px;
+    opacity: 1;
+    transition: max-height 0.6s ease-in-out, opacity 0.5s ease-in-out, margin-top 0.5s ease-in-out;
+  }
+
+  /* collapsed state */
+  .letter.collapsed {
+    padding: 16px 56px 16px 26px;
+    border-radius: 16px;
+  }
+  .letter.collapsed h1 {
+    font-size: 15px;
+    letter-spacing: 1.5px;
+    margin-bottom: 0;
+    text-align: left;
+    text-transform: uppercase;
+    font-style: normal;
+    opacity: 0.85;
+  }
+  .letter.collapsed .letter-body {
+    max-height: 0;
+    opacity: 0;
+    margin-top: 0;
+  }
+  .letter.collapsed .letter-toggle .icon-collapse { display: none; }
+  .letter.collapsed .letter-toggle .icon-expand { display: block; }
+  .letter.collapsed .letter-toggle {
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  .letter.collapsed .letter-toggle:active { transform: translateY(-50%) scale(0.92); }
+
+  /* focus mode — photos come into full clarity */
+  body.focus-mode .memory { opacity: 1 !important; }
+  body.focus-mode .letter {
+    background: rgba(26, 26, 46, 0.55);
+    backdrop-filter: blur(3px) saturate(125%);
+    -webkit-backdrop-filter: blur(3px) saturate(125%);
+  }
+  body.focus-mode::before { opacity: 0.5; }
+  body::before { transition: opacity 0.5s ease-in-out; }
 
   .letter h1 {
     font-family: 'Playfair Display', Georgia, serif;
@@ -143,6 +213,7 @@
     text-align: center;
     line-height: 1.4;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+    transition: all 0.5s ease-in-out;
   }
 
   .letter p {
@@ -408,19 +479,30 @@
 
 <main class="stage">
   <article class="letter" id="letter">
+    <button class="letter-toggle" id="letterToggle" type="button" aria-label="Toggle letter" aria-expanded="true">
+      <svg class="icon-collapse" viewBox="0 0 24 24" aria-hidden="true">
+        <polyline points="18 15 12 9 6 15"></polyline>
+      </svg>
+      <svg class="icon-expand" viewBox="0 0 24 24" aria-hidden="true">
+        <polyline points="6 9 12 15 18 9"></polyline>
+      </svg>
+    </button>
+
     <h1>To my precious Jasmine,</h1>
 
-    <p class="salutation">Sayang,</p>
+    <div class="letter-body" id="letterBody">
+      <p class="salutation">Sayang,</p>
 
-    <p>I nak tulis ni sebab I know how tired your heart is of everything. I know we just had a bad argument and you are feeling burnt out. It is okay if you dont have the energy for love right now. If you want to be selfish right now, and I want you to know, that is okay. I will carry the love for both of us until you are able to bernafas balik.</p>
+      <p>I nak tulis ni sebab I know how tired your heart is of everything. I know we just had a bad argument and you are feeling burnt out. It is okay if you dont have the energy for love right now. If you want to be selfish right now, and I want you to know, that is okay. I will carry the love for both of us until you are able to bernafas balik.</p>
 
-    <p>I am sorry for being another distraction when you just needed peace from me. From now on, I won't be a weight you have to carry, I will be someone who is always behind you, supporting you quietly. I don't care if you feel mean, tired, or selfish, all I care about is you. You are the girl I met on Christmas for our first date and the person who was really shy to meet me the first time.</p>
+      <p>I am sorry for being another distraction when you just needed peace from me. From now on, I won't be a weight you have to carry, I will be someone who is always behind you, supporting you quietly. I don't care if you feel mean, tired, or selfish, all I care about is you. You are the girl I met on Christmas for our first date and the person who was really shy to meet me the first time.</p>
 
-    <p>Focus on your finals sayang, I am not going anywhere, I will be right here in the background, waiting for you. No pressure, no rush, no expectations. Its just me, loving you in all the ways I can.</p>
+      <p>Focus on your finals sayang, I am not going anywhere, I will be right here in the background, waiting for you. No pressure, no rush, no expectations. Its just me, loving you in all the ways I can.</p>
 
-    <div class="signoff">
-      Forever your jello baby,
-      <span class="name">Khairul Aqib</span>
+      <div class="signoff">
+        Forever your jello baby,
+        <span class="name">Khairul Aqib</span>
+      </div>
     </div>
   </article>
 
@@ -515,6 +597,15 @@
   const memories = document.querySelectorAll('.memory');
   const overlay = document.getElementById('modalOverlay');
   const modalClose = document.getElementById('modalClose');
+  const letterToggle = document.getElementById('letterToggle');
+
+  /* --- Letter collapse / focus mode --- */
+  letterToggle.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const collapsed = letter.classList.toggle('collapsed');
+    document.body.classList.toggle('focus-mode', collapsed);
+    letterToggle.setAttribute('aria-expanded', String(!collapsed));
+  });
 
   function clusterMemories() {
     const rect = letter.getBoundingClientRect();
