@@ -78,19 +78,19 @@
     filter: saturate(0.9) brightness(0.95);
   }
 
-  .memory:nth-child(1) { top: 8%;  left: 6%;  transform: rotate(-6deg);  animation-delay: 0s, 0.2s; }
-  .memory:nth-child(2) { top: 14%; left: 72%; transform: rotate(5deg);   animation-delay: -7s, 0.6s; }
-  .memory:nth-child(3) { top: 38%; left: 2%;  transform: rotate(4deg);   animation-delay: -14s, 1s; }
-  .memory:nth-child(4) { top: 46%; left: 80%; transform: rotate(-7deg);  animation-delay: -21s, 1.4s; }
-  .memory:nth-child(5) { top: 70%; left: 8%;  transform: rotate(-3deg);  animation-delay: -28s, 1.8s; }
-  .memory:nth-child(6) { top: 76%; left: 68%; transform: rotate(8deg);   animation-delay: -35s, 2.2s; }
-  .memory:nth-child(7) { top: 30%; left: 42%; transform: rotate(-4deg);  animation-delay: -18s, 2.6s; }
+  .memory:nth-child(1) { top: 4%;   left: 2%;   transform: rotate(-6deg);  animation-delay: 0s, 0.2s; }
+  .memory:nth-child(2) { top: 10%;  left: 78%;  transform: rotate(5deg);   animation-delay: -7s, 0.6s; }
+  .memory:nth-child(3) { top: 40%;  left: -4%;  transform: rotate(4deg);   animation-delay: -14s, 1s; }
+  .memory:nth-child(4) { top: 48%;  left: 82%;  transform: rotate(-7deg);  animation-delay: -21s, 1.4s; }
+  .memory:nth-child(5) { top: 78%;  left: 4%;   transform: rotate(-3deg);  animation-delay: -28s, 1.8s; }
+  .memory:nth-child(6) { top: 82%;  left: 72%;  transform: rotate(8deg);   animation-delay: -35s, 2.2s; }
+  .memory:nth-child(7) { top: 24%;  left: 44%;  transform: rotate(-4deg);  animation-delay: -18s, 2.6s; }
 
   @keyframes drift {
     0%, 100% { translate: 0 0; }
-    25%      { translate: 12px -18px; }
-    50%      { translate: -10px 14px; }
-    75%      { translate: 8px 10px; }
+    25%      { translate: 28px -36px; }
+    50%      { translate: -24px 30px; }
+    75%      { translate: 18px 22px; }
   }
 
   @keyframes fadeIn {
@@ -118,18 +118,18 @@
   /* letter card */
   .letter {
     position: relative;
-    width: 100%;
+    width: 90%;
     max-width: 560px;
     padding: 44px 32px 40px;
     border-radius: 22px;
-    background: rgba(255, 255, 255, 0.07);
-    backdrop-filter: blur(20px) saturate(140%);
-    -webkit-backdrop-filter: blur(20px) saturate(140%);
-    border: 1px solid rgba(255, 255, 255, 0.16);
+    background: rgba(26, 26, 46, 0.4);
+    backdrop-filter: blur(10px) saturate(130%);
+    -webkit-backdrop-filter: blur(10px) saturate(130%);
+    border: 1px solid rgba(255, 255, 255, 0.14);
     box-shadow:
-      0 30px 80px rgba(0, 0, 0, 0.4),
-      inset 0 1px 0 rgba(255, 255, 255, 0.18);
-    color: #fdf6f2;
+      0 30px 80px rgba(0, 0, 0, 0.45),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    color: #ffffff;
   }
 
   .letter h1 {
@@ -139,9 +139,10 @@
     font-size: 22px;
     letter-spacing: 0.3px;
     margin-bottom: 26px;
-    color: #fbeae4;
+    color: #ffffff;
     text-align: center;
     line-height: 1.4;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
   }
 
   .letter p {
@@ -149,8 +150,8 @@
     font-size: 17.5px;
     line-height: 1.85;
     margin-bottom: 18px;
-    color: rgba(253, 246, 242, 0.94);
-    text-shadow: 0 1px 2px rgba(0,0,0,0.25);
+    color: #ffffff;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
   }
 
   .letter .salutation {
@@ -163,6 +164,8 @@
     font-style: italic;
     text-align: right;
     line-height: 1.7;
+    color: #ffffff;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
   }
 
   .letter .signoff .name {
@@ -369,11 +372,19 @@
   }
 
   @media (max-width: 480px) {
-    .memory { width: 120px; height: 140px; padding: 8px 8px 24px 8px; }
-    .letter { padding: 36px 24px 32px; border-radius: 20px; }
+    .memory { width: 110px; height: 128px; padding: 7px 7px 22px 7px; }
+    .letter {
+      width: 90%;
+      max-width: 400px;
+      padding: 34px 22px 30px;
+      border-radius: 20px;
+      background: rgba(26, 26, 46, 0.4);
+      backdrop-filter: blur(10px) saturate(130%);
+      -webkit-backdrop-filter: blur(10px) saturate(130%);
+    }
     .letter h1 { font-size: 20px; }
     .letter p { font-size: 16.5px; line-height: 1.8; }
-    .stage { padding: 36px 18px 80px; gap: 26px; }
+    .stage { padding: 36px 14px 90px; gap: 26px; }
     .modal { padding: 36px 26px 28px; }
     .modal p { font-size: 17.5px; }
   }
@@ -397,7 +408,7 @@
 
 <main class="stage">
   <article class="letter" id="letter">
-    <h1>To my precious Jasmine ❤️,</h1>
+    <h1>To my precious Jasmine,</h1>
 
     <p class="salutation">Sayang,</p>
 
@@ -409,7 +420,7 @@
 
     <div class="signoff">
       Forever your jello baby,
-      <span class="name">Khairul Aqib ❤️</span>
+      <span class="name">Khairul Aqib</span>
     </div>
   </article>
 
