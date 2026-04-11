@@ -83,14 +83,7 @@
     filter: saturate(0.9) brightness(0.95);
   }
 
-  /* orbit positions — relative to the .memories container, not the viewport */
-  .memory:nth-child(1) { top: 4%;   left: 4%;   rotate: -6deg;  animation-delay: 0s,    -1s,   0.2s; }
-  .memory:nth-child(2) { top: 8%;   left: 72%;  rotate: 5deg;   animation-delay: -7s,   -3s,   0.6s; }
-  .memory:nth-child(3) { top: 42%;  left: -2%;  rotate: 4deg;   animation-delay: -14s,  -5s,   1s;   }
-  .memory:nth-child(4) { top: 40%;  left: 78%;  rotate: -7deg;  animation-delay: -21s,  -2s,   1.4s; }
-  .memory:nth-child(5) { top: 78%;  left: 3%;   rotate: -3deg;  animation-delay: -28s,  -4s,   1.8s; }
-  .memory:nth-child(6) { top: 76%;  left: 72%;  rotate: 8deg;   animation-delay: -35s,   0s,   2.2s; }
-  .memory:nth-child(7) { top: 86%;  left: 38%;  rotate: -4deg;  animation-delay: -18s,  -1.5s, 2.6s; }
+  /* orbit positions + per-card offsets are assigned via JS in one pass */
 
   @keyframes drift {
     0%, 100% { translate: 0 0; }
@@ -456,13 +449,7 @@
 
   @media (max-width: 480px) {
     .memory { width: 120px; height: 138px; padding: 7px 7px 22px 7px; }
-    .memory:nth-child(1) { top: 2%;   left: -2%; }
-    .memory:nth-child(2) { top: 5%;   left: 72%; }
-    .memory:nth-child(3) { top: 42%;  left: -8%; }
-    .memory:nth-child(4) { top: 40%;  left: 78%; }
-    .memory:nth-child(5) { top: 82%;  left: -2%; }
-    .memory:nth-child(6) { top: 80%;  left: 72%; }
-    .memory:nth-child(7) { top: 90%;  left: 38%; }
+    /* mobile positions also assigned via JS using data attributes */
     .letter {
       width: 90%;
       max-width: 400px;
@@ -487,15 +474,7 @@
 </head>
 <body>
 
-<div class="memories" id="memories">
-  <div class="memory"><img src="Imagess/image1.jpg" alt=""></div>
-  <div class="memory"><img src="Imagess/image2.jpg" alt=""></div>
-  <div class="memory"><img src="Imagess/image3.jpg" alt=""></div>
-  <div class="memory"><img src="Imagess/image4.jpg" alt=""></div>
-  <div class="memory"><img src="Imagess/image5.jpg" alt=""></div>
-  <div class="memory"><img src="Imagess/image6.jpg" alt=""></div>
-  <div class="memory"><img src="Imagess/image7.jpg" alt=""></div>
-</div>
+<div class="memories" id="memories"></div>
 
 <main class="stage">
   <article class="letter" id="letter">
@@ -567,6 +546,78 @@
 </button>
 
 <script>
+  /* --- Polaroid generation: one per distinct image, no duplicates --- */
+  const POLAROID_IMAGES = [
+    'Imagess/image1.jpg',
+    'Imagess/image2.jpg',
+    'Imagess/image3.jpg',
+    'Imagess/image4.jpg',
+    'Imagess/image5.jpg',
+    'Imagess/image6.jpg',
+    'Imagess/image7.jpg',
+    'Imagess/image8.png',
+    'Imagess/image9.png',
+  ];
+
+  /* 9 orbital slots that frame the letter — top band, mid sides, bottom band.
+     Values are % inside the .memories container (10%–90% desktop, full width mobile). */
+  const DESKTOP_SLOTS = [
+    { top: '2%',  left: '2%',  rotate: -6 },
+    { top: '3%',  left: '44%', rotate: 3  },
+    { top: '4%',  left: '82%', rotate: 5  },
+    { top: '34%', left: '-2%', rotate: 4  },
+    { top: '36%', left: '82%', rotate: -7 },
+    { top: '62%', left: '-2%', rotate: -4 },
+    { top: '64%', left: '82%', rotate: 6  },
+    { top: '86%', left: '18%', rotate: -3 },
+    { top: '87%', left: '62%', rotate: 8  },
+  ];
+
+  /* slight edge-push on phones so they peek but don't crowd the text */
+  const MOBILE_SLOTS = [
+    { top: '1%',  left: '-3%' },
+    { top: '2%',  left: '42%' },
+    { top: '3%',  left: '76%' },
+    { top: '34%', left: '-8%' },
+    { top: '36%', left: '78%' },
+    { top: '64%', left: '-6%' },
+    { top: '65%', left: '76%' },
+    { top: '88%', left: '10%' },
+    { top: '90%', left: '60%' },
+  ];
+
+  const memoriesEl = document.getElementById('memories');
+  const mobileMQ = window.matchMedia('(max-width: 480px)');
+
+  function buildPolaroids() {
+    memoriesEl.innerHTML = '';
+    const slots = mobileMQ.matches ? MOBILE_SLOTS : DESKTOP_SLOTS;
+    POLAROID_IMAGES.forEach((src, i) => {
+      const slot = slots[i];
+      const rotate = DESKTOP_SLOTS[i].rotate;
+      const driftDelay = -i * 4.2;
+      const floatDelay = -((i * 0.7) % 6);
+      const fadeDelay = 0.2 + i * 0.25;
+
+      const el = document.createElement('div');
+      el.className = 'memory';
+      el.style.top = slot.top;
+      el.style.left = slot.left;
+      el.style.rotate = rotate + 'deg';
+      el.style.animationDelay = `${driftDelay}s, ${floatDelay}s, ${fadeDelay}s`;
+
+      const img = document.createElement('img');
+      img.src = src;
+      img.alt = '';
+      img.loading = 'lazy';
+      el.appendChild(img);
+      memoriesEl.appendChild(el);
+    });
+  }
+
+  buildPolaroids();
+  mobileMQ.addEventListener('change', buildPolaroids);
+
   /* --- Audio (soft, looping, iOS-friendly) --- */
   const audio = document.getElementById('bgAudio');
   audio.volume = 0.3;
