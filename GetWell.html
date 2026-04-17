@@ -245,70 +245,6 @@ section {
   50% { transform: translateY(6px); opacity: 1; }
 }
 
-/* ===== MUSIC PLAYER ===== */
-.music-float {
-  position: fixed;
-  bottom: 24px;
-  right: 24px;
-  z-index: 1000;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  animation: fade-in 1.5s 2s both;
-}
-
-.music-btn {
-  width: 52px;
-  height: 52px;
-  border-radius: 50%;
-  border: none;
-  cursor: pointer;
-  background: linear-gradient(135deg, var(--pink-blush), var(--lavender));
-  color: white;
-  font-size: 1.3rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 4px 20px var(--shadow-mid), 0 0 0 0 rgba(240, 184, 196, 0);
-  transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
-  -webkit-tap-highlight-color: transparent;
-  position: relative;
-}
-
-.music-btn:hover {
-  transform: scale(1.08);
-  box-shadow: 0 6px 28px var(--shadow-mid);
-}
-
-.music-btn.playing {
-  animation: music-glow 2.5s ease-in-out infinite;
-}
-
-@keyframes music-glow {
-  0%, 100% { box-shadow: 0 4px 20px var(--shadow-mid), 0 0 0 0 rgba(240, 184, 196, 0.3); }
-  50% { box-shadow: 0 4px 20px var(--shadow-mid), 0 0 0 12px rgba(240, 184, 196, 0); }
-}
-
-.music-label {
-  background: var(--white-glass);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.6);
-  border-radius: 100px;
-  padding: 8px 16px;
-  font-size: 0.7rem;
-  font-weight: 500;
-  color: var(--text-mid);
-  white-space: nowrap;
-  box-shadow: 0 2px 12px var(--shadow-soft);
-  opacity: 1;
-  transition: opacity 0.5s ease;
-}
-
-.music-label.hidden {
-  opacity: 0;
-  pointer-events: none;
-}
 
 /* ===== LETTER SECTION ===== */
 .letter-section {
@@ -888,13 +824,6 @@ section {
   <button class="popup-close" onclick="closeHugPopup()">❤️</button>
 </div>
 
-<!-- ===== MUSIC PLAYER ===== -->
-<div class="music-float">
-  <span class="music-label" id="musicLabel">Our Song</span>
-  <button class="music-btn" id="musicBtn" onclick="toggleMusic()">
-    <span id="musicIcon">&#9835;</span>
-  </button>
-</div>
 
 <script>
 /* ===== IMAGE DATA ===== */
@@ -990,40 +919,7 @@ document.addEventListener('keydown', function(e) {
   if (e.key === 'ArrowRight') navigateLightbox(e, 1);
 });
 
-/* ===== MUSIC ===== */
-let audio = null;
-let isPlaying = false;
 
-function toggleMusic() {
-  const btn = document.getElementById('musicBtn');
-  const icon = document.getElementById('musicIcon');
-  const label = document.getElementById('musicLabel');
-
-  if (!audio) {
-    audio = new Audio('Imagess/Us.mp3');
-    audio.loop = true;
-    audio.volume = 0.35;
-  }
-
-  if (isPlaying) {
-    audio.pause();
-    isPlaying = false;
-    btn.classList.remove('playing');
-    icon.textContent = '\u266B';
-    label.textContent = 'Our Song';
-    label.classList.remove('hidden');
-  } else {
-    audio.play().then(function() {
-      isPlaying = true;
-      btn.classList.add('playing');
-      icon.textContent = '\u23F8';
-      label.textContent = 'Now Playing...';
-      setTimeout(function() { label.classList.add('hidden'); }, 3000);
-    }).catch(function() {
-      label.textContent = 'Tap again';
-    });
-  }
-}
 
 /* ===== VIRTUAL HUG ===== */
 const hugMessages = [
